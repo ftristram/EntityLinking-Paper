@@ -15,6 +15,9 @@
 
 \usepackage{lipsum}
 \usepackage{todonotes}
+%\usepackage{booktabs}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -55,8 +58,9 @@
 \section{Introduction}\label{sec:introduction}
 Entity linking belongs to the field of natural language processing and is concerned with determining the identity of entities mentioned in a text. Note that entity linking is not concerned with recognizing a person as a person or a name as a name -- such a practice is the concern of a task known as named-entity recognition. Entity linking only refers to creating an association between a token in some form of input with the representation of an entity in some knowledge base.
 
+We evaluated V-SEL against the web services of FOX (Federated knOwledge eXtraction framework) and DBpedia Spotlight. FOX is a named entity recognition tool which uses AGDISTIS for entity linking. DBpedia Spotlight employs a four-staged approach which first recognizes and then links entities.
 
-\todo[inline]{Write introduction}
+\todo[inline]{Write introduction. Add references to bibliography.}
 
 \section{Approach}\label{sec:approach}
 The input data for {\acronym} is a regular piece of text, for example a newspaper article (further referred to simply as \textit{input}), in which entity-representing fragments are already identified (possibly by named-entity recognition software). A \textit{fragment} from a given text is a token, or multiple successive tokens, which are representing the same entity. For a given fragment the algorithm is supposed to determine the matching real world entity. In order to do so, a set of entity \textit{candidates} for this fragment is needed, of which the algorithm has to pick the most likely correct one. 
@@ -132,6 +136,36 @@ $$ recall = \frac{\text{\# of correctly assigned entities}}{\text{\# of gold sta
 $$ F_1 = 2 \cdot \frac{precision \cdot recall}{precision + recall} $$
 
 \todo[inline]{Put up results}
+
+\begin{table}
+\centering
+\caption{Results for the AIDA-YAGO dataset.}
+\label{table:redirects}
+\begin{tabularx}{0.8\textwidth}{  c  Y  Y  Y }
+    \hline
+    & Fox & DBpedia spotlight & {\acronym}  \\ 
+    \hline
+    Precision  & 49.27\% & x\% & \textbf{59.33\%} \\
+    Recall & 29.68\% & x\% & \textbf{58.56\%} \\
+    $F_1$ & 0.37 & x &\textbf{0.59} \\
+    \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Results for the KORE50 dataset.}
+\label{table:redirects}
+\begin{tabularx}{0.8\textwidth}{  c  Y  Y  Y }
+    \hline
+    & Fox & DBpedia spotlight & {\acronym}  \\ 
+    \hline
+    Precision  & 30.0\% & x\% & 26.16\% \\
+    Recall & 20.83\% & x\% & 23.33\% \\
+    $F_1$ & 0.25 & x & 0.25 \\
+    \hline
+\end{tabularx}
+\end{table}
 
 \section{Conclusion}\label{sec:conclusion}
 The experiments have shown that {\acronym} is viable approach for entity linking. On the AIDA dataset, {\acronym} performs comparably to Babelfy and better than DBpedia Spotlight. On the KORE50 dataset however Babelfy reaches a higher accuracy than {\acronym}. KORE50 was built intentionally to have a high degree of ambiguity and short sentences, which renders {\acronym 's} approach less effective: Short sentences provide fewer tokens to evaluate a tf-idf overlap, while increased numbers of candidates allow for more detrimental semantic signature vector overlaps.
