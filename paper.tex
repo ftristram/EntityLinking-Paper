@@ -34,11 +34,11 @@
 
 
 %opening
-\title{Veasel meets Fox: an ensemble approach to entity linking based on vector similarity }
-\titlerunning{Veasel meets Fox}
+\title{Veasel meets FOX: an ensemble approach to entity linking based on vector similarity }
+\titlerunning{Veasel meets FOX}
 
-\author{Felix Tristram \and Christina Unger \and Sebastian Walter \and Philipp Cimiano}
-\authorrunning{Felix Tristram \and Christina Unger \and Sebastian Walter \and Philipp Cimiano}
+\author{Felix Tristram \and Sebastian Walter \and Philipp Cimiano  \and Christina Unger}
+\authorrunning{Felix Tristram \and Sebastian Walter \and Philipp Cimiano  \and Christina Unger}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 % the affiliations are given next; don't give your e-mail address
@@ -50,28 +50,28 @@
 
 
 \begin{abstract}
-The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{Veasel}, a novel approach that is based on an ensemble of different features that is induced using a Support Vector Machine. We compare our approach to state-of-the-art tools such as Fox and DBpedia spotlight, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset. An important feature of Veasel is its speed.
+The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{Veasel}, a novel approach that is based on an ensemble of different features that is trained using a Support Vector Machine. We compare our approach to state-of-the-art tools such as FOX and DBpedia spotlight, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset. An important feature of Veasel is its speed.
 
 \keywords{Wikipedia, entity linking, vector similarity}
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
 
-The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{Veasel}, a novel approach that is based on an ensemble of different features that is induced using a Support Vector Machine.  Given a named entity and a resource candidate, Veasel combines four features that quantify i) the likelihood that the actual name refers to the resource candidate (extracted from Wikipedia anchors), ii) the similarity of the textual context in which the name occurs to the textual context of the resource candidate (measures as the bag-of-words similarity using cosine), iii) the overlap between the semantic neighborhood signature of the resource candidate and the named entities mentioned in the larger context of the named entity, and iv) the prominence of the resource candidate as measured by its page rank in the DBpedia graph. An optimal linear model is trained using an SVM to induce an ensemble that combines these four features into an overall decision whether the named entity refers to a candidate resources or not.  
+The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{Veasel}, a novel approach that is based on an ensemble of different features that is trained using a Support Vector Machine.  Given a named entity and a resource candidate, Veasel combines four features that quantify i) the likelihood that the actual name refers to the resource candidate (extracted from Wikipedia anchors), ii) the similarity of the textual context in which the name occurs to the textual context of the resource candidate (measured as the bag-of-words similarity using cosine), iii) the overlap between the semantic neighborhood signature of the resource candidate and the named entities mentioned in the larger context of the named entity, and iv) the prominence of the resource candidate as measured by its page rank in the DBpedia graph. An optimal linear model is trained using an SVM to induce an ensemble that combines these four features into an overall decision whether the named entity refers to a candidate resource or not.  
 
 As underlying knowledge base, we use DBpedia and rely on Wikipedia pages as textual context of the resources in DBpedia to extract our textual features.
 
-We compare our approach to state-of-the-art tools such as Fox and DBpedia spotlight, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset. Further, we show that Veasel beats state-of-the-art named entity linking approaches in terms of speed.
+We compare our approach to state-of-the-art tools such as FOX\cite{foxdemo} and DBpedia spotlight\cite{spotlight}, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset. Further, we show that Veasel beats state-of-the-art named entity linking approaches in terms of speed.
 
-In the following section we describe the approach, and then report evaluation results in Section~\ref{sec:results}.
+In the following section we describe the approach and then report evaluation results in Section~\ref{sec:results}.
 
 
 \section{Approach}\label{sec:approach}
 
-The input data for {\acronym} is a regular piece of text, for example a newspaper article, in which entity-representing sequences of tokens (\emph{fragments}) are already identified (possibly by a named entity recognition tool). For a given fragment, the algorithm's task is to determine the matching real-world entity. It does so by picking the most likely entity from a set of entity candidates, e.g. specified in a knowledge base, in our case Wikipedia. 
+The input data for {\acronym} is a regular piece of text, for example a newspaper article, in which entity-representing sequences of tokens (\emph{fragments}) are already identified (we use the Stanford NER \cite{ner}). For a given fragment, the algorithm's task is to determine the matching real-world entity. It does so by picking the most likely entity from a set of entity candidates, e.g. specified in a knowledge base, in our case DBpedia. 
 
-A fragment which represents a real-world entity is called an \textit{anchor}. To gather a database of anchors and their corresponding entities, we extracted all anchor texts from a Wikipedia dump\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:Database_download}}. Within a dump hyperlinks to other pages appear in the form \texttt{[[Barack Obama|President Obama]]}, 
-where {\texttt{Barack Obama} refers to an entity\footnote{\url{http://en.wikipedia.org/wiki/Barack_Obama}} and \texttt{President Obama} is the anchor string which appears in the page's text. A map is generated by parsing all Wikipedia articles (in a chosen language) and counting the occurrences of anchor-entity pairs. The candidates for a given fragment are now found by looking up all entities that were referred to by the fragment within Wikipedia. 
+A fragment which represents a real-world entity is called an \textit{anchor}. To gather a database of anchors and their corresponding entities, we extracted all anchor texts from a Wikipedia dump\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:Database_download}}. Within a dump, hyperlinks to other pages appear in the form \texttt{[[Barack Obama|President Obama]]}, 
+where {\texttt{Barack Obama} refers to an entity\footnote{\url{http://en.wikipedia.org/wiki/Barack_Obama}} and \texttt{President Obama} is the anchor string which appears in the page's text. A map is generated by parsing all Wikipedia articles (in a chosen language) and counting the occurrences of anchor-entity pairs. The candidates for a given fragment are found by looking up all entities that were referred to by the fragment within Wikipedia. 
 
 Candidates are scored by a support vector machine.\footnote{{\acronym} is using Weka's SMO: \url{http://weka.sourceforge.net/doc.dev/weka/classifiers/functions/SMO.html}} Four features are computed for each candidate, which are used as input for the SVM: tf-idf vector similarity, semantic neighborhood signature vector similarity, candidate reference probability, and page rank. In the following we explain each of them in more detail.
 
@@ -98,7 +98,7 @@ $$\mathrm{tfidfVectorSimilarity}(A, B) = \cos(\theta) = \frac{A \cdot B}{\|A\| \
 
 The \emph{semantic neighborhood signature vector similarity} measures the overlap between the candidate's \emph{semantic neighborhood signature} and the set of all candidates for the input. The rationale is that a candidate is more likely to be the correct assignment for a given fragment if entities from its semantic neighborhood signature are considered for other fragments (as related entities probably appear together).
 
-The semantic neighborhood signature for an entity is computed in the same ways as Babelfy \cite{babelfy} does, except that instead of the BabelNet\footnote{\url{http://babelnet.org/}} knowledge base we use a graph of interlinked Wikipedia pages, where each page is a vertex and each link between pages is an edge. The idea is to identify for each resource all other resources it is closely related to. This is a two step process. First, the edges are assigned weights so that edges in denser parts of the graph become more important. The weight of an edge $\mathrm{weight}(v, v')$ is the number of directed triangles (directed cycles of length 3) it appears in:
+The semantic neighborhood signature for an entity is computed in a similar way as Babelfy \cite{babelfy} does, except that instead of the BabelNet\footnote{\url{http://babelnet.org/}} knowledge base we use a graph of interlinked Wikipedia pages, where each page is a vertex and each link between pages is an edge. The idea is to identify for each resource all other resources it is closely related to. This is a two step process. First, the edges are assigned weights so that edges in denser parts of the graph become more important. The weight of an edge $\mathrm{weight}(v, v')$ is the number of directed triangles (directed cycles of length 3) it appears in:
 $$\mathrm{weight}(v, v') := |\{(v, v', v'') : (v, v'), (v', v''), (v'', v) \in E\}| + 1$$
 
 Where $v$, $v'$ and $v''$ are vertices and $E$ is the set of all the graph's edges.
@@ -110,24 +110,24 @@ Where V is the set of all vertices in the graph.
 
 During the random walk for a given root vertex $v_r$, the visits to each vertex $v_i (i \neq r)$ are counted. The result is a frequency distribution of related vertices in which the vertices with higher counts are interpreted as to be more relevant to the root vertex than vertices with lower counts. Vertices with a count lower than threshold $\tau$ are ignored\footnote{$\tau = 10$ in our implementation, so that $n$ and $\tau$ have the same ratio as in Babelfy.}.
 
-In its essence we thus compute a measure similar to the \emph{personalized page rank} \cite{personalized_page_rank} using a random walk approach similar to the one implemented in Babelfy. This step is performed offline.
+We compute a measure similar to the \emph{personalized page rank} \cite{personalized_page_rank} using a random walk approach similar to the one implemented in Babelfy. This step is performed offline.
 
 To calculate the similarity score for each candidate, their semantic neighborhood signature vector needs to compared to the semantic neighborhood signature vector of the input. Unfortunately, the input does not have a semantic neighborhood signature of its own. As a surrogate a candidate vector is generated as follows: Let $m(e) \rightarrow c$ be a mapping from an entity $e$ to a count $c$. For each candidate entity of every fragment, check whether it already appears in the mapping. If not, add it to the map and set its count to one. If it exists, increment its count by one.
 
 Therefore a candidate's semantic neighborhood signature similarity score increases as entities from their semantic neighborhood signature appear more often as candidates in a given input.
-The top 10 elements in the semantic neighborhood signature of Barack Obama are for instance:
-\begin{enumerate}
-\item United\_States\_House\_of\_Representatives\_elections,\_2010
-\item Barack\_Obama
-\item Presidency\_of\_Barack\_Obama
-\item United\_States\_presidential\_election,\_2008
-\item Barack\_Obama\_presidential\_primary\_campaign,\_2008
-\item First\_inauguration\_of\_Barack\_Obama
-\item Democratic\_Party\_(United\_States)
-\item George\_W.\_Bush
-\item Republican\_Party\_(United\_States)
-\item Joe\_Biden
-\end{enumerate}
+%The top 10 elements in the semantic neighborhood signature of Barack Obama are for instance:
+%\begin{enumerate}
+%\item United\_States\_House\_of\_Representatives\_elections,\_2010
+%\item Barack\_Obama
+%\item Presidency\_of\_Barack\_Obama
+%\item United\_States\_presidential\_election,\_2008
+%\item Barack\_Obama\_presidential\_primary\_campaign,\_2008
+%\item First\_inauguration\_of\_Barack\_Obama
+%\item Democratic\_Party\_(United\_States)
+%\item George\_W.\_Bush
+%\item Republican\_Party\_(United\_States)
+%\item Joe\_Biden
+%\end{enumerate}
 
 % ------------ candidate reference probability -------------------
 \subsection{Candidate Reference Probability}
@@ -166,7 +166,7 @@ The latter is due to the fact that KORE50 was designed to have a high degree of 
 
 One of the biggest strengths of {\acronym} is its speed. 
 Running it on the full datasets took less than one minute for KORE50 and about 45 seconds for AIDA.
-\todo[inline]{Redo measurements with the latest approach.}
+%\todo[inline]{Redo measurements with the latest approach.}
 %As comparison, running Babelfy on the KORE50 dataset takes about 15 minutes, and running it on AIDA had to be stopped after 164 hours.
 
 \begin{table}[t]
@@ -193,7 +193,7 @@ DBpedia Spotlight & 0.22 & 0.46 & 0.30 & 0.22 & \textbf{0.34} & \textbf{0.27} \\
 
 \section{Conclusion}\label{sec:conclusion}
 
-We have presented Veasel, a new entity linking approach that exploits an ensemble of features that are linearly combined using a Support Vector Machine. We have shown that the approach works very well when the contexts are longer, clearly outperforming Fox and DBpedia Spotlight on the AIDA CoNLL dataset. On the KORE50 dataset where contexts are shorter, it achieves comparable results to these approaches. In future work, we will release a service that can be publicly accessed using a similar interface to DBpedia Spotlight and Fox. We will also extend the approach to other languages and perform a more systematic evaluation using the GERBIL framework \cite{gerbil}.
+We have presented Veasel, a new entity linking approach that exploits an ensemble of features that are linearly combined using a Support Vector Machine. We have shown that the approach works very well when the contexts are longer, clearly outperforming FOX and DBpedia Spotlight on the AIDA CoNLL dataset. On the KORE50 dataset where contexts are shorter, it achieves comparable results to these approaches. In future work, we will release a service that can be publicly accessed using a similar interface to DBpedia Spotlight and FOX. We will also extend the approach to other languages and perform a more systematic evaluation using the GERBIL framework \cite{gerbil}.
 
 %Ricardo Usbeck, Michael Röder, Axel-Cyrille Ngonga Ngomo, Ciro Baron, Andreas Both, Martin Brümmer, Diego Ceccarelli, Marco Cornolti, Didier Cherix, Bernd Eickmann, Paolo Ferragina, Christiane Lemke, Andrea Moro, Roberto Navigli, Francesco Piccinno, Giuseppe Rizzo, Harald Sack, René Speck, Raphaël Troncy, Jörg Waitelonis, Lars Wesemann:
 %GERBIL: General Entity Annotator Benchmarking Framework. WWW 2015: 1133-1143
