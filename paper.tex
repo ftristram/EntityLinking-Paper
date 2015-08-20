@@ -18,6 +18,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{s}{>{\hsize=2\hsize}X}
 
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
@@ -187,6 +188,32 @@ DBpedia Spotlight & 0.22 & 0.46 & 0.30 & 0.22 & \textbf{0.34} & \textbf{0.27} \\
 
 {\acronym} works best when a fragment refers to the most common meaning of a word. For example, assignments like \textit{BSE} $\rightarrow$ \texttt{Bovine\_spongiform\_encephalopathy} are usually correct. More ambiguous fragments get assigned correctly as well when that assignment is the most common one in the given context, for example \textit{commission} $\rightarrow$ \texttt{European\_Commission} in a debate of the European Parliament. Problems arise when the target entity is not the most common assignment for a given fragment. For example, the fragment \textit{Spanish} in \textit{Spanish Farm Minister Loyola de Palacio} leads to the assignment \textit{Spanish} $\rightarrow$ \texttt{Spanish\_Language}, as the fragment usually refers to the language, whereas the gold assignment is \textit{Spanish} $\rightarrow$ \texttt{Spain}. % This particular kind of case can be avoided by introducing syntactic information to the system, for example by using an automated part-of-speech tagger that can prevent the system of assigning a noun to an adjective fragment.
 
+\begin{table}[t]
+\begin{center}
+\begin{tabularx}{\textwidth}{ X Y Y Y Y Y Y}
+\toprule
+& \multicolumn{3}{c}{AIDA/CoNLL}  
+& \multicolumn{3}{c}{KORE50}\\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & Precision & Recall & $F_1$ & Precision & Recall & $F_1$ \\ 
+\midrule
+\emph{without} &  &  &  &  &  &  \\ 
+SNS & x & x & x & 0.32 & 0.28 &  0.29 \\
+tf-idf & x & x & x & 0.32 & 0.28 &  0.29 \\
+page rank & x & x & x & 0.12 & 0.10 &  0.11 \\
+CRP & x & x & x & 0.31 & 0.27 & 0.29 \\
+\midrule
+\emph{only with} &  &  &  &  &  &  \\ 
+SNS & x & x & x & 0.07 & 0.06 &  0.06 \\
+tf-idf & x & x & x & 0.08 & 0.07 &  0.07 \\
+page rank & x & x & x & 0.32 & 0.28 &  0.29 \\
+CRP & x & x & x & 0.08 & 0.07 &  0.07 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\caption{Results for the AIDA/CoNLL and KORE50 datasets when one of the components is removed and when only one component is used for classification. SNS is Semantic Neighborhood Signature Vector Similarity, CRP is Candidate Reference Probability.}
+\label{table:components}
+\end{table}
 
 \section{Conclusion}\label{sec:conclusion}
 
