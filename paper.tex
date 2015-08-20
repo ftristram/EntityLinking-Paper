@@ -150,7 +150,7 @@ Where $c$ is a normalizing factor. Notably the PageRank of a page is derived fro
 
 \section{Results}\label{sec:results}
 
-We evaluate our entity linking approach on two datasets\footnote{{\acronym}'s results for the 10-fold cross validations can be downloaded from: \url{http://sebastianwalter.org/weasel/nFoldresults.zip}}, AIDA/CoNLL and KORE50, and compare its results with two other state-of-the-art entity linking approaches, AGDISTIS \cite{agdistis} as part of FOX\footnote{\url{http://aksw.org/Projects/FOX.html}}, and DBpedia Spotlight\footnote{\url{http://spotlight.dbpedia.org}},  
+We evaluate our entity linking approach on two datasets\footnote{{\acronym}'s results for the 10-fold cross validations can be downloaded from: \url{http://sebastianwalter.org/weasel/nFoldResultsAIDA.zip} and \url{http://sebastianwalter.org/weasel/nFoldResultsKore50.zip}}, AIDA/CoNLL and KORE50, and compare its results with two other state-of-the-art entity linking approaches, AGDISTIS \cite{agdistis} as part of FOX\footnote{\url{http://aksw.org/Projects/FOX.html}}, and DBpedia Spotlight\footnote{\url{http://spotlight.dbpedia.org}},  
 in terms of precision and recall. Precision, recall, and the derived $F_1$ score were defined as follows:
 
 $$Precision = \frac{\text{\# of correctly assigned entities}}{\text{\# of all assigned entities}}$$
@@ -177,8 +177,8 @@ The latter is due to the fact that KORE50 was designed to have a high degree of 
 & Precision & Recall & $F_1$ & Precision & Recall & $F_1$ \\ 
 \midrule
 FOX & 0.49 & 0.30 & 0.37 & \textbf{0.30} & 0.21 &  0.25 \\
-DBpedia Spotlight & 0.22 & 0.46 & 0.30 & 0.22 & \textbf{0.34} & \textbf{0.27} \\
-{\acronym} & \textbf{0.59} & \textbf{0.59} & \textbf{0.59} & 0.26 & 0.23 &  0.25 \\
+DBpedia Spotlight & 0.22 & 0.46 & 0.30 & 0.22 & \textbf{0.34} & 0.27 \\
+{\acronym} & \textbf{0.60} & \textbf{0.57} & \textbf{0.58} & \textbf{0.30} & 0.26 &  \textbf{0.28} \\
 \bottomrule
 \end{tabularx}
 \end{center}
