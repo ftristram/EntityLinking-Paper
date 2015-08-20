@@ -34,7 +34,7 @@
 
 
 %opening
-\title{{\acronym} meets FOX: an ensemble approach to entity linking based on vector similarity }
+\title{{\acronym} meets FOX: a combined approach to entity linking based on vector similarity }
 \titlerunning{{\acronym} meets FOX}
 
 \author{Felix Tristram \and Sebastian Walter \and Philipp Cimiano  \and Christina Unger}
@@ -50,14 +50,14 @@
 
 
 \begin{abstract}
-The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{{\acronym}}, a novel approach that is based on an ensemble of different features that is trained using a Support Vector Machine. We compare our approach to state-of-the-art tools such as FOX and DBpedia spotlight, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset.
+The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{{\acronym}}, a novel approach that is based on a combination of different features that is trained using a Support Vector Machine. We compare our approach to state-of-the-art tools such as FOX and DBpedia spotlight, showing that it outperforms both on the AIDA/CoNLL dataset and provides comparable results on the KORE50 dataset.
 
 \keywords{Wikipedia, entity linking, vector similarity}
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
 
-The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{{\acronym}}, a novel approach that is based on an ensemble of different features that is trained using a Support Vector Machine.  Given a named entity and a resource candidate, {\acronym} combines four features that quantify i) the likelihood that the actual name refers to the resource candidate (extracted from Wikipedia anchors), ii) the similarity of the textual context in which the name occurs to the textual context of the resource candidate (measured as the bag-of-words similarity using cosine), iii) the overlap between the semantic neighborhood signature of the resource candidate and the named entities mentioned in the larger context of the named entity, and iv) the prominence of the resource candidate as measured by its page rank in the DBpedia graph. An optimal linear model is trained using an SVM to induce an ensemble that combines these four features into an overall decision whether the named entity refers to a candidate resource or not.  
+The task of entity linking consists in disambiguating named entities occurring in textual data by linking them to an identifier in a knowledge base that represents the real-world entity they denote. We present \emph{{\acronym}}, a novel approach that is based on a combination of different features that is trained using a Support Vector Machine.  Given a named entity and a resource candidate, {\acronym} combines four features that quantify i) the likelihood that the actual name refers to the resource candidate (extracted from Wikipedia anchors), ii) the similarity of the textual context in which the name occurs to the textual context of the resource candidate (measured as the bag-of-words similarity using cosine), iii) the overlap between the semantic neighborhood signature of the resource candidate and the named entities mentioned in the larger context of the named entity, and iv) the prominence of the resource candidate as measured by its page rank in the DBpedia graph. An optimal non-linear model is trained using an SVM which combines these four features into an overall decision whether the named entity refers to a candidate resource or not.  
 
 As underlying knowledge base, we use DBpedia and rely on Wikipedia pages as textual context of the resources in DBpedia to extract our textual features.
 
@@ -190,7 +190,7 @@ DBpedia Spotlight & 0.22 & 0.46 & 0.30 & 0.22 & \textbf{0.34} & \textbf{0.27} \\
 
 \section{Conclusion}\label{sec:conclusion}
 
-We have presented {\acronym}, a new entity linking approach that exploits an ensemble of features that are linearly combined using a Support Vector Machine. We have shown that the approach works very well when the contexts are longer, clearly outperforming FOX and DBpedia Spotlight on the AIDA CoNLL dataset. On the KORE50 dataset where contexts are shorter, it achieves comparable results to these approaches. In future work, we will release a service that can be publicly accessed using a similar interface to DBpedia Spotlight and FOX. We will also extend the approach to other languages and perform a more systematic evaluation using the GERBIL framework \cite{gerbil}.
+We have presented {\acronym}, a new entity linking approach that exploits a combination of features that are linearly combined using a Support Vector Machine. We have shown that the approach works very well when the contexts are longer, clearly outperforming FOX and DBpedia Spotlight on the AIDA CoNLL dataset. On the KORE50 dataset where contexts are shorter, it achieves comparable results to these approaches. In future work, we will release a service that can be publicly accessed using a similar interface to DBpedia Spotlight and FOX. We will also extend the approach to other languages and perform a more systematic evaluation using the GERBIL framework \cite{gerbil}.
 
 %Ricardo Usbeck, Michael Röder, Axel-Cyrille Ngonga Ngomo, Ciro Baron, Andreas Both, Martin Brümmer, Diego Ceccarelli, Marco Cornolti, Didier Cherix, Bernd Eickmann, Paolo Ferragina, Christiane Lemke, Andrea Moro, Roberto Navigli, Francesco Piccinno, Giuseppe Rizzo, Harald Sack, René Speck, Raphaël Troncy, Jörg Waitelonis, Lars Wesemann:
 %GERBIL: General Entity Annotator Benchmarking Framework. WWW 2015: 1133-1143
